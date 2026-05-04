@@ -4,12 +4,12 @@ FROM golang:1.23-alpine AS builder
 WORKDIR /app
 
 COPY go.mod go.sum ./
-RUN go env -w GOPROXY=direct && go mod download
+COPY vendor ./vendor
 
 COPY . .
 
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -o server server.go
+# Build the application using vendored dependencies
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o server server.go
 
 # Final stage
 FROM alpine:latest

@@ -19,8 +19,8 @@ server
 .env.local
 .env.*.local
 
-# Dependency directories
-vendor/
+# Dependency directories (uncomment if NOT using vendor mode)
+# vendor/
 
 # IDEs
 .idea/
