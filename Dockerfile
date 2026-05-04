@@ -1,28 +1,19 @@
-# Build stage
-FROM golang:1.23 AS builder
-
-WORKDIR /app
-
-COPY go.mod go.sum ./
-COPY vendor ./vendor
-
-COPY . .
-
-# Build the application using vendored dependencies
-RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o server server.go
-
-# Final stage
+# Use a minimal base image - no Go needed, binary is pre-built in CI
 FROM alpine:latest
+
+# Install CA certificates for HTTPS connections
+RUN apk --no-cache add ca-certificates
 
 WORKDIR /root/
 
-# Copy the Pre-built binary file from the previous stage
-COPY --from=builder /app/server .
-# Copy the .env file if available (useful for local testing the container)
-COPY --from=builder /app/.env* ./
+# Copy the pre-built binary from the CI runner
+COPY server .
 
-# Expose port 8080 to the outside world
+# Copy the .env file if available (useful for local testing)
+COPY .env* ./
+
+# Expose port 8080
 EXPOSE 8080
 
-# Command to run the executable
+# Run the binary
 CMD ["./server"]
