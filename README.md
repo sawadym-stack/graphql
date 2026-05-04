@@ -58,14 +58,10 @@ The project includes a GitHub Actions pipeline (`.github/workflows/deploy.yml`) 
 To use the CI/CD pipeline, add the following secrets to your GitHub repository:
 - `DOCKER_USERNAME`
 - `DOCKER_PASSWORD`
-- `SERVER_HOST`
-- `SERVER_USER`
-- `SERVER_SSH_KEY`
 
 ## Deployment Options
-You can deploy this application using various platforms:
-- **Render/Railway**: Connect your GitHub repo, define the Build Command (`go build -o server server.go`), Start Command (`./server`), and set environment variables.
-- **DigitalOcean/VPS**: The GitHub Action included automatically deploys via SSH to any Linux server running Docker.
+- **Render / Railway**: These are the easiest options. Simply connect your GitHub repository, choose **Web Service**, and select the **Dockerfile** as the build method.
+- **Local**: Use the Docker instructions above to run the app on your own machine.
 
 ## Testing with GraphQL Playground
 Once running, you can test the following:
